@@ -14,8 +14,15 @@ El objetivo principal de esta aplicación es proporcionar una herramienta efecti
 
 ## Comandos Usados
 
-C:
-
 1. **Instalación de Laravel UI**: `composer require laravel/ui`
 2. **Generar las Vistas de Autenticación**: `php artisan ui vue --auth`
 3. **Compilar los Recursos Frontend**: `npm install && npm run dev`
+
+## Colores
+
+- **Rojo** (para indicar alerta o peligro): `#FF0000`
+- **Azul Oscuro** (para transmitir confianza y seguridad): `#2C3E50`
+- **Naranja** (para elementos destacados o de atención): `#E67E22`
+- **Verde** (para indicar éxito o seguridad): `#27AE60`
+- **Gris Claro** (para fondos y elementos neutrales): `#ECF0F1`
+- **Negro** (para texto o elementos destacados): `#2D3436`

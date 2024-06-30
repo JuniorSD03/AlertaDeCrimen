@@ -12,7 +12,7 @@ class NotificacionController extends Controller
      */
     public function index()
     {
-        //
+        return view('notificacion.notificaciones');
     }
 
     /**

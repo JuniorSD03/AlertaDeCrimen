@@ -15,10 +15,26 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::apiResource('/tipodelitos', TipoDelitoController::class);
 Route::apiResource('/localizacions', LocalizacionController::class);
 Route::apiResource('/reportes', ReporteController::class);
 Route::apiResource('/notificacions', NotificacionController::class);
 Route::apiResource('/comentarios', ComentarioController::class);
+
+Route::get('/formularioReporte', function () {
+    return view('reporte.formularioReporte');
+})->name('formularioReporte');
+
+Route::get('/formularioReporte', function () {
+    return view('reporte.formularioReporte');
+})->name('formularioReporte');
+
+Route::get('/verReporte', function () {
+    return view('reporte.verReporte');
+})->name('formularioReporte');
+
+Route::get('/formularioComentario', function () {
+    return view('comentario.formularioComentario');
+})->name('formularioComentario');

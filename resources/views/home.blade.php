@@ -5,48 +5,22 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Dashboard') }}</div>
-
                 <div class="card-body">
                     @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
                     </div>
                     @endif
-
-                    <p>{{ __('You are logged in!') }}</p>
-
-                    <!-- Sección de Bienvenida -->
-                    <div class="jumbotron">
-                        <h1 class="display-4">¡Bienvenido!</h1>
-                        <p class="lead">Gracias por iniciar sesión en nuestra aplicación de alerta de crimen.</p>
-                        <hr class="my-4">
-                        <p>Aquí puedes comenzar a reportar y visualizar los delitos en tu área.</p>
-                        <a class="btn btn-primary btn-lg" href="#" role="button">Empezar</a>
-                    </div>
-
-                    <!-- Sección de Últimas Actividades -->
-                    <div class="card mt-4">
-                        <div class="card-header">Últimas Actividades</div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item">Actividad 1</li>
-                                <li class="list-group-item">Actividad 2</li>
-                                <li class="list-group-item">Actividad 3</li>
-                            </ul>
+                    <div class="jumbotron text-center">
+                        <h1 class="d-flex justify-content-center align-items-center">¡Bienvenido!</h1>
+                        <p>Aquí puedes comenzar a reportar los delitos en tu área.</p>
+                        <div class="text-center my-4">
+                            <a href="/formularioReporte" class="btn btn-danger rounded-circle d-inline-flex align-items-center justify-content-center p-5" style="width: 250px; height: 250px;">
+                                <span style="font-size: 1.5rem;">Nuevo reporte</span>
+                            </a>
                         </div>
                     </div>
 
-                    <!-- Sección de Notificaciones -->
-                    <div class="card mt-4">
-                        <div class="card-header">Notificaciones</div>
-                        <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nueva notificación</li>
-                                <li class="list-group-item">Otra notificación</li>
-                            </ul>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
