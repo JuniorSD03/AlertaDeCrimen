@@ -41,6 +41,19 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/notificacions') }}">Notificaciones</a>
                         </li>
+                        @auth
+                        @if (Auth::user()->rol==='administrador')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/tipodelitos') }}">Tipos de delito</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/localizacions') }}">Direcciones</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/comentarios') }}">Comentarios</a>
+                        </li>
+                        @endif
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

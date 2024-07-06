@@ -4,35 +4,28 @@
 <div class="container text-center">
     <h2 class="my-4">Crímenes Reportados</h2>
 
+    @foreach($reportes as $reporte)
     <div class="card mb-3">
-        <div class="card-header">
-            <h4 class="card-title">Juan Pérez</h4>
+        <div class="card-header text-center">
+            <h2 class="card-title">{{ $reporte->titulo }}</h2>
+            <p class="text-left" style="font-size: 0.9em;">Por: <strong>{{ $reporte->user_name }}</strong></p>
         </div>
         <div class="card-body">
-            <img src="https://via.placeholder.com/800x400" class="img-fluid mb-3" alt="Imagen del Reporte">
-            <p class="card-text"><strong>Descripción:</strong> Robo a mano armada en la tienda de conveniencia.</p>
-            <p class="card-text"><strong>Fecha y Hora:</strong> 28-06-2024 15:30</p>
-            <p class="card-text"><strong>Ubicación:</strong> Av. Principal 123, Ciudad</p>
-            <a href="/verReporte" class="btn btn-primary">
+            @if($reporte->imagen)
+            <img src="{{ asset('imagen/' . $reporte->imagen) }}" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; height: 300px; object-fit: cover;">
+            @else
+            <img src="https://via.placeholder.com/800x400" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; height: 300px; object-fit: cover;">
+            @endif
+            <p class="card-text"><strong>Descripción:</strong> {{ $reporte->descripcion }}</p>
+            <p class="card-text"><strong>Fecha y Hora:</strong> {{ $reporte->created_at->format('d-m-Y H:i') }}</p>
+            <p class="card-text"><strong>Ubicación:</strong> {{ $reporte->localizacion_nombre }}</p>
+            <p class="card-text"><strong>Tipo de Delito:</strong> {{ $reporte->tipo_delito_nombre }}</p>
+            <a href="/reportes/{{ $reporte->id }}" class="btn btn-primary">
                 Ver Detalles
             </a>
         </div>
     </div>
-
-    <div class="card mb-3">
-        <div class="card-header">
-            <h4 class="card-title">María López</h4>
-        </div>
-        <div class="card-body">
-            <img src="https://via.placeholder.com/800x400" class="img-fluid mb-3" alt="Imagen del Reporte">
-            <p class="card-text"><strong>Descripción:</strong> Vandalismo en el parque central.</p>
-            <p class="card-text"><strong>Fecha y Hora:</strong> 27-06-2024 10:00</p>
-            <p class="card-text"><strong>Ubicación:</strong> Parque Central, Ciudad</p>
-            <a href="/verReporte" class="btn btn-primary">
-                Ver Detalles
-            </a>
-        </div>
-    </div>
+    @endforeach
 
 </div>
 @endsection

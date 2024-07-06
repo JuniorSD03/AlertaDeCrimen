@@ -4,18 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\TipoDelito;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TipoDelitoController extends Controller
 {
     public function index()
     {
-        $tiposDelitos = TipoDelito::all();
-        return view('tipos_delitos.index', compact('tiposDelitos'));
+        if ($this->verificarRol()) {
+            $tiposDelitos = TipoDelito::orderBy('id', 'desc')->get();
+            return view('tipodelito.verTiposDeDelitos', compact('tiposDelitos'));
+        }
+
+        return redirect('/');
     }
 
     public function create()
     {
-        return view('tipos_delitos.create');
+        if ($this->verificarRol()) {
+            return view('tipodelito.registrarTiposDeDelitos');
+        }
+
+        return redirect('/');
     }
 
     public function store(Request $request)
@@ -25,10 +34,12 @@ class TipoDelitoController extends Controller
             'descripcion' => 'nullable|string',
         ]);
 
-        TipoDelito::create($request->all());
+        $tipoDelito = new TipoDelito();
+        $tipoDelito->nombre = $request->nombre;
+        $tipoDelito->descripcion = $request->descripcion;
+        $tipoDelito->save();
 
-        return redirect()->route('tipos-delitos.index')
-            ->with('success', 'Tipo de delito creado correctamente.');
+        return redirect(route('tipodelitos.index'));
     }
 
     public function show(TipoDelito $tipoDelito)
@@ -36,29 +47,42 @@ class TipoDelitoController extends Controller
         return view('tipos_delitos.show', compact('tipoDelito'));
     }
 
-    public function edit(TipoDelito $tipoDelito)
+    public function edit($id)
     {
-        return view('tipos_delitos.edit', compact('tipoDelito'));
+        if ($this->verificarRol()) {
+            $tipoDelito = TipoDelito::find($id);
+
+            return view('tipodelito.editarTiposDeDelitos', compact('tipoDelito'));
+        }
+
+        return redirect('/');
     }
 
-    public function update(Request $request, TipoDelito $tipoDelito)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
         ]);
 
-        $tipoDelito->update($request->all());
+        $tipoDelito = TipoDelito::find($id);
 
-        return redirect()->route('tipos-delitos.index')
-            ->with('success', 'Tipo de delito actualizado correctamente.');
+        $tipoDelito->nombre = $request->nombre;
+        $tipoDelito->descripcion = $request->descripcion;
+        $tipoDelito->save();
+
+        return redirect(route('tipodelitos.index'));
     }
 
-    public function destroy(TipoDelito $tipoDelito)
+    public function destroy($id)
     {
+        $tipoDelito = TipoDelito::find($id);
         $tipoDelito->delete();
+        return redirect(route('tipodelitos.index'));
+    }
 
-        return redirect()->route('tipos-delitos.index')
-            ->with('success', 'Tipo de delito eliminado correctamente.');
+    public function verificarRol()
+    {
+        return Auth::user()->rol === 'administrador';
     }
 }

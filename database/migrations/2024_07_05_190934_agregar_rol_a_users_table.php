@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('localizacions', function (Blueprint $table) {
-            $table->id();
-            $table->string('direccion');
-            $table->string('descripcion')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('rol')->default('usuario');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('localizacions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('rol');
+        });
     }
 };

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('descripcion');
             $table->foreignId('users_id');
             $table->foreignId('tipos_delitos_id');
-            $table->foreignId('localizacions_id')->onDelete('cascade');
+            $table->foreignId('localizacions_id');
             $table->string('imagen')->nullable();
             $table->timestamps();
         });

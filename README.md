@@ -18,6 +18,11 @@ El objetivo principal de esta aplicación es proporcionar una herramienta efecti
 2. **Generar las Vistas de Autenticación**: `php artisan ui vue --auth`
 3. **Compilar los Recursos Frontend**: `npm install && npm run dev`
 
+## Seeders
+
+1. **Creación de seeders**: `php artisan make:seeder NombreSeeder`
+1. **Sembrar la base de datos**: `php artisan db:seed`  **- Forma individual**: `php artisan db:seed --class=NombreSeeder`
+
 ## Colores
 
 - **Rojo** (para indicar alerta o peligro): `#FF0000`

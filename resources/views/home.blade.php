@@ -15,7 +15,7 @@
                         <h1 class="d-flex justify-content-center align-items-center">¡Bienvenido!</h1>
                         <p>Aquí puedes comenzar a reportar los delitos en tu área.</p>
                         <div class="text-center my-4">
-                            <a href="/formularioReporte" class="btn btn-danger rounded-circle d-inline-flex align-items-center justify-content-center p-5" style="width: 250px; height: 250px;">
+                            <a href="/registrarReportes" class="btn btn-danger rounded-circle d-inline-flex align-items-center justify-content-center p-5" style="width: 250px; height: 250px;">
                                 <span style="font-size: 1.5rem;">Nuevo reporte</span>
                             </a>
                         </div>
