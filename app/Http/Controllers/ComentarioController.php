@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Comentario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Notificacion;
 
 class ComentarioController extends Controller
 {
@@ -35,16 +36,17 @@ class ComentarioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'direccion' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
+            'descripcion' => 'required|string|max:255',
+            'reporte_id' => 'required|exists:reportes,id'
         ]);
 
-        $comentarios = new Comentario();
-        $comentarios->direccion = $request->direccion;
-        $comentarios->descripcion = $request->descripcion;
-        $comentarios->save();
+        $comentario = new Comentario;
+        $comentario->descripcion = $request->descripcion;
+        $comentario->users_id = auth()->id();
+        $comentario->reportes_id = $request->reporte_id;
+        $comentario->save();
 
-        return redirect(route('localizacions.index'));
+        return redirect(route('reportes.show', $request->reporte_id));
     }
 
     public function show(Comentario $comentarios)
@@ -52,38 +54,22 @@ class ComentarioController extends Controller
         return view('tipos_delitos.show', compact('comentarios'));
     }
 
-    public function edit($id)
-    {
-        if ($this->verificarRol()) {
-            $comentarios = Comentario::find($id);
-
-            return view('comentario.editarComentarios', compact('comentarios'));
-        }
-
-        return redirect('/');
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'direccion' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
-
-        $comentarios = Comentario::find($id);
-
-        $comentarios->direccion = $request->direccion;
-        $comentarios->descripcion = $request->descripcion;
-        $comentarios->save();
-
-        return redirect(route('localizacions.index'));
-    }
-
     public function destroy($id)
     {
         $comentarios = Comentario::find($id);
+
+        $userId = $comentarios->users_id;
+        $descripcion = $comentarios->descripcion;
+        $reportes_id = $comentarios->reportes_id;
+
+        #Creación de la notificación
+        $notificaciones = new Notificacion();
+        $notificaciones->mensaje = "Se eliminó tu comentario: " . $descripcion;
+        $notificaciones->users_id = $userId;
+        $notificaciones->save();
+
         $comentarios->delete();
-        return redirect(route('localizacions.index'));
+        return redirect(route('reportes.show', $reportes_id));
     }
 
     public function verificarRol()

@@ -23,6 +23,15 @@
             <a href="/reportes/{{ $reporte->id }}" class="btn btn-primary">
                 Ver Detalles
             </a>
+            @auth
+            @if (Auth::user()->rol==='administrador'|| Auth::id() === $reporte->users_id)
+            <form action="/reportes/{{ $reporte->id }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger mt-3" onclick="return confirm('¿Estás seguro de que deseas eliminar este reporte?')">Eliminar</button>
+            </form>
+            @endif
+            @endauth
         </div>
     </div>
     @endforeach

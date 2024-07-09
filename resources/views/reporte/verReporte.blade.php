@@ -9,9 +9,9 @@
         </div>
         <div class="card-body">
             @if($reporte->imagen)
-                <img src="{{ asset('imagen/' . $reporte->imagen) }}" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; object-fit: cover;">
+            <img src="{{ asset('imagen/' . $reporte->imagen) }}" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; object-fit: cover;">
             @else
-                <img src="https://via.placeholder.com/1200x600" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; height: 300px; object-fit: cover;">
+            <img src="https://via.placeholder.com/1200x600" class="img-fluid mb-3" alt="Imagen del Reporte" style="width: 100%; height: 300px; object-fit: cover;">
             @endif
             <p class="card-text"><strong>Autor:</strong> {{ $reporte->user_name }}</p>
             <p class="card-text"><strong>Descripción:</strong> {{ $reporte->descripcion }}</p>
@@ -23,39 +23,38 @@
 
     <h3 class="my-4">Comentarios</h3>
 
-    <!-- Comentarios estáticos -->
+    @if($comentarios->isNotEmpty())
+    @foreach($comentarios as $comentario)
     <div class="card mb-3">
         <div class="card-body">
-            <p class="card-text"><strong>Juan Pérez</strong></p>
-            <p class="card-text">Este es un comentario estático para propósitos de demostración.</p>
-            <p class="card-text"><small class="text-muted">28-06-2024 16:30</small></p>
+            <p class="card-text"><strong>{{ $comentario->user_name }}</strong></p>
+            <p class="card-text">{{ $comentario->descripcion }}</p>
+            <p class="card-text"><small class="text-muted">{{ $comentario->created_at->format('d-m-Y H:i') }}</small></p>
+            @auth
+            @if (Auth::user()->rol==='administrador'|| Auth::id() === $comentario->users_id)
+            <form action="/comentarios/{{ $comentario->id }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-sm btn-danger mt-3" onclick="return confirm('¿Estás seguro de que deseas eliminar este comentario?')">Eliminar</button>
+            </form>
+            @endif
+            @endauth
         </div>
     </div>
-    <div class="card mb-3">
-        <div class="card-body">
-            <p class="card-text"><strong>María López</strong></p>
-            <p class="card-text">Este es otro comentario estático para propósitos de demostración.</p>
-            <p class="card-text"><small class="text-muted">29-06-2024 14:45</small></p>
-        </div>
-    </div>
-    <div class="card mb-3">
-        <div class="card-body">
-            <p class="card-text"><strong>Carlos García</strong></p>
-            <p class="card-text">Este es un tercer comentario estático para propósitos de demostración.</p>
-            <p class="card-text"><small class="text-muted">30-06-2024 12:00</small></p>
-        </div>
-    </div>
+    @endforeach
+    @else
+    <p>No hay comentarios para este reporte.</p>
+    @endif
 
-    <!-- Formulario para agregar comentario -->
-    <form method="POST" action="{{ route('comentarios.store') }}">
+    <form method="POST" action="/comentarios">
         @csrf
         <div class="form-group">
             <label for="descripcion">Agregar Comentario</label>
             <textarea id="descripcion" class="form-control @error('descripcion') is-invalid @enderror" name="descripcion" required>{{ old('descripcion') }}</textarea>
             @error('descripcion')
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
             @enderror
         </div>
         <input type="hidden" name="reporte_id" value="{{ $reporte->id }}">

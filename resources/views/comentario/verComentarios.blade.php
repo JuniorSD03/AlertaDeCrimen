@@ -6,9 +6,6 @@
         <div class="col">
             <h2>Comentarios</h2>
         </div>
-        <div class="col text-end">
-            <a href="/registrarlocalizacions" class="btn btn-primary">Agregar</a>
-        </div>
     </div>
 
     <div class="table-responsive">
@@ -18,16 +15,17 @@
                     <th>Nombre de usuario</th>
                     <th>Comentario</th>
                     <th>Titulo de reporte</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($localizaciones as $localizacion)
+                @foreach ($comentarios as $comentario)
                 <tr>
-                    <td>{{ $localizacion->direccion }}</td>
-                    <td>{{ $localizacion->descripcion }}</td>
+                    <td>{{ $comentario->user_name }}</td>
+                    <td>{{ $comentario->descripcion }}</td>
+                    <td>{{ $comentario->reporte_titulo }}</td>
                     <td>
-                        <a href="/editarlocalizacions/{{ $localizacion->id }}" class="btn btn-sm btn-warning">Editar</a>
-                        <form action="/localizacions/{{ $localizacion->id }}" method="POST">
+                        <form action="/comentarios/{{ $comentario->id }}" method="POST">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar este Comentario?')">Eliminar</button>

@@ -6,7 +6,8 @@ use App\Models\Reporte;
 use App\Models\TipoDelito;
 use App\Models\Localizacion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Comentario;
+use App\Models\Notificacion;
 
 class ReporteController extends Controller
 {
@@ -31,21 +32,16 @@ class ReporteController extends Controller
 
     public function store(Request $request)
     {
-        // Validar los datos del formulario
         $request->validate([
             'titulo' => 'required|string|max:255',
             'descripcion' => 'required|string',
             'tipo_delito_id' => 'required|exists:tipo_delitos,id',
             'ubicacion_id' => 'required|exists:localizacions,id',
-            'imagen' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
-        if ($request->hasFile('imagen')) {
-            $imageName = time() . '.' . $request->imagen->extension();
-            $request->imagen->move(public_path('imagen'), $imageName);
-        } else {
-            $imageName = null;
-        }
+        $imageName = time() . '.' . $request->imagen->extension();
+        $request->imagen->move(public_path('imagen'), $imageName);
 
         $reporte = new Reporte;
         $reporte->titulo = $request->titulo;
@@ -55,6 +51,12 @@ class ReporteController extends Controller
         $reporte->localizacions_id = $request->ubicacion_id;
         $reporte->imagen = $imageName;
         $reporte->save();
+
+        #Creación de la notificación
+        $notificaciones = new Notificacion();
+        $notificaciones->mensaje = "Reporte creado de forma exitosa";
+        $notificaciones->users_id = auth()->id();
+        $notificaciones->save();
 
         return redirect(route('reportes.index'));
     }
@@ -68,41 +70,35 @@ class ReporteController extends Controller
             ->where('reportes.id', $id)
             ->first();
 
-        return view('reporte.verReporte', compact('reporte'));
-    }
+        $comentarios = Comentario::join('users', 'comentarios.users_id', '=', 'users.id')
+            ->select('comentarios.*', 'users.name as user_name')
+            ->where('comentarios.reportes_id', $id)
+            ->orderBy('comentarios.id', 'desc')
+            ->get();
 
-    public function edit($id)
-    {
-        $reporte = Reporte::find($id);
-
-        return view('reporte.editarReportes', compact('reporte'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-        ]);
-
-        $reporte = Reporte::find($id);
-
-        $reporte->nombre = $request->nombre;
-        $reporte->descripcion = $request->descripcion;
-        $reporte->save();
-
-        return redirect(route('reportes.index'));
+        return view('reporte.verReporte', compact('reporte', 'comentarios'));
     }
 
     public function destroy($id)
     {
         $reporte = Reporte::find($id);
-        $reporte->delete();
-        return redirect(route('reportes.index'));
-    }
+        $imagePath = public_path('imagen') . '/' . $reporte->imagen;
 
-    public function verificarRol()
-    {
-        return Auth::user()->rol === 'administrador';
+        if (file_exists($imagePath)) {
+            @unlink($imagePath);
+        }
+
+        $userId = $reporte->users_id;
+        $titulo = $reporte->titulo;
+
+        #Creación de la notificación
+        $notificaciones = new Notificacion();
+        $notificaciones->mensaje = "Se eliminó tu reporte: " . $titulo;
+        $notificaciones->users_id = $userId;
+        $notificaciones->save();
+
+        $reporte->delete();
+
+        return redirect(route('reportes.index'));
     }
 }

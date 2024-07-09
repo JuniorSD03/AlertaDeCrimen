@@ -35,12 +35,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">BarrioSeguro</a>
                         </li>
+                        @auth
+
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/reportes') }}">Reportes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/notificacions') }}">Notificaciones</a>
                         </li>
+                        @endauth
                         @auth
                         @if (Auth::user()->rol==='administrador')
                         <li class="nav-item">
