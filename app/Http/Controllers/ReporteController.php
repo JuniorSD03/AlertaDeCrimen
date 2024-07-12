@@ -23,6 +23,20 @@ class ReporteController extends Controller
         return view('reporte.reportes', compact('reportes'));
     }
 
+    public function buscar(Request $request)
+    {
+        $titulo = $request->titulo;
+        $reportes = Reporte::join('tipo_delitos', 'reportes.tipos_delitos_id', '=', 'tipo_delitos.id')
+            ->join('localizacions', 'reportes.localizacions_id', '=', 'localizacions.id')
+            ->join('users', 'reportes.users_id', '=', 'users.id')
+            ->select('reportes.*', 'tipo_delitos.nombre as tipo_delito_nombre', 'localizacions.direccion as localizacion_nombre', 'users.name as user_name')
+            ->where('reportes.titulo', 'like', '%' . $titulo . '%')
+            ->orderBy('reportes.id', 'desc')
+            ->get();
+
+        return view('reporte.reportes', compact('reportes'));
+    }
+
     public function create()
     {
         $tiposDeReportes = TipoDelito::all();

@@ -26,6 +26,7 @@ Route::get('/registrarlocalizacions', [LocalizacionController::class, 'create'])
 Route::get('/editarlocalizacions/{id}', [LocalizacionController::class, 'edit']);
 
 Route::apiResource('/reportes', ReporteController::class);
+Route::get('/buscarReportes', [ReporteController::class, 'buscar']);
 Route::get('/registrarReportes', [ReporteController::class, 'create']);
 Route::get('/editarReportes/{id}', [ReporteController::class, 'edit']);
 

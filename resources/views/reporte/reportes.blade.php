@@ -4,6 +4,15 @@
 <div class="container text-center">
     <h2 class="my-4">Crímenes Reportados</h2>
 
+    <form method="GET" action="{{ url('/buscarReportes') }}">
+        <div class="input-group mb-3">
+            <input type="text" name="titulo" class="form-control" placeholder="Buscar por título" aria-label="Buscar por título" aria-describedby="button-addon2" value="{{ request('titulo') }}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Buscar</button>
+            </div>
+        </div>
+    </form>
+
     @foreach($reportes as $reporte)
     <div class="card mb-3">
         <div class="card-header text-center">
