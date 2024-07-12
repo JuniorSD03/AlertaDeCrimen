@@ -21,7 +21,11 @@ El objetivo principal de esta aplicación es proporcionar una herramienta efecti
 ## Seeders
 
 1. **Creación de seeders**: `php artisan make:seeder NombreSeeder`
-1. **Sembrar la base de datos**: `php artisan db:seed`  **- Forma individual**: `php artisan db:seed --class=NombreSeeder`
+2. **Sembrar la base de datos**: `php artisan db:seed`  **- Forma individual**: `php artisan db:seed --class=NombreSeeder`
+
+## Factory
+
+1. **Creación de factory**: `php artisan make:factory NombreFactory --model=Nombre`
 
 ## Colores
 

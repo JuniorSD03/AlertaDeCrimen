@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(UsuarioAdministradorSeeder::class);
         $this->call(TiposDelitosSeeder::class);
         $this->call(UbicacionSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

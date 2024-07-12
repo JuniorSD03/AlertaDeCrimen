@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\TipoDelito;
+use App\Models\User;
 
-class TiposDelitosSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     *
-     * @return void
      */
     public function run(): void
     {
-        TipoDelito::factory()->count(10)->create();
+        User::factory()->count(10)->create();
     }
 }
